@@ -5,7 +5,6 @@ Penser comme un attaquant pour mieux se défendre.
 Compatible : Termux • Kali Linux • Windows
 """
 
-import argparse
 import platform
 import sys
 from src.attack_surface import analyser_surface
@@ -24,14 +23,11 @@ def afficher_banner():
 ║      ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 ║                                                              ║
 ║                    T E X T E                                 ║
-║                                                              ║
 ║          Penser comme un attaquant pour mieux se défendre    ║
-║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
 """
     print(banner)
 
-    # Détection de l'environnement
     systeme = platform.system()
     if "android" in platform.platform().lower() or "termux" in sys.executable.lower():
         env = "Termux (Android)"
@@ -45,44 +41,69 @@ def afficher_banner():
     print(f"  Environnement détecté : {env}")
     print(f"  Mode                  : Éducatif uniquement")
     print("=" * 64)
-    print()
+
+
+def afficher_menu():
+    print("\n" + "─" * 50)
+    print("              MENU PRINCIPAL")
+    print("─" * 50)
+    print("  1. Application / Site Web")
+    print("  2. Serveur / Machine")
+    print("  3. Réseau")
+    print("  4. Application (Desktop / Mobile)")
+    print("  5. Environnement Cloud")
+    print("  6. Analyser TOUT")
+    print("  0. Quitter")
+    print("─" * 50)
+
+
+def demander_cible():
+    print("\nNom de la cible / laboratoire (ex: <labo-web>, <serveur-test>)")
+    cible = input("→ ").strip()
+    if not cible:
+        cible = "<cible>"
+    return cible
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Ti-Attack-Texte - Analyse éducative des surfaces d'attaque"
-    )
-    parser.add_argument(
-        "--type",
-        choices=list(TYPES_CIBLES.keys()) + ["all"],
-        default="all",
-        help="Type de cible à analyser (web, serveur, reseau, application, cloud)"
-    )
-    parser.add_argument(
-        "--cible",
-        default="<cible>",
-        help="Nom de la cible (placeholder recommandé, ex: <labo-web>)"
-    )
-    parser.add_argument(
-        "--no-banner",
-        action="store_true",
-        help="Ne pas afficher le banner"
-    )
+    afficher_banner()
 
-    args = parser.parse_args()
+    while True:
+        afficher_menu()
+        choix = input("\nChoisis une option : ").strip()
 
-    if not args.no_banner:
-        afficher_banner()
+        if choix == "0":
+            print("\n[+] Au revoir ! Reste prudent.")
+            break
 
-    if args.type == "all":
-        for type_cible in TYPES_CIBLES:
-            analyser_surface(args.cible, type_cible)
-            print()
-    else:
-        analyser_surface(args.cible, args.type)
+        types = {
+            "1": "web",
+            "2": "serveur",
+            "3": "reseau",
+            "4": "application",
+            "5": "cloud",
+            "6": "all"
+        }
 
-    print("\n[!] Rappel : Utilise uniquement sur des systèmes que tu possèdes ou en laboratoire.")
-    print("[!] Placeholders uniquement (<cible>, <labo>, etc.)")
+        if choix not in types:
+            print("\n[!] Choix invalide. Réessaie.")
+            continue
+
+        type_choisi = types[choix]
+        cible = demander_cible()
+
+        print("\n" + "=" * 60)
+        print(f"  Analyse en cours pour : {cible}")
+        print("=" * 60)
+
+        if type_choisi == "all":
+            for t in TYPES_CIBLES:
+                analyser_surface(cible, t)
+                print()
+        else:
+            analyser_surface(cible, type_choisi)
+
+        input("\nAppuie sur Entrée pour revenir au menu...")
 
 
 if __name__ == "__main__":
