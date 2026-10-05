@@ -1,0 +1,21 @@
+# Ti-Attack-Texte
+
+**Outil éducatif de cybersécurité**  
+Penser comme un attaquant pour mieux se défendre.
+
+> **Important** : Cet outil est strictement éducatif.  
+> Il utilise uniquement des placeholders (`<cible>`, `<labo>`, etc.).  
+> Ne jamais l’utiliser contre des systèmes réels sans autorisation explicite.
+
+---
+
+## Objectif
+
+Aider à comprendre les **surfaces d’attaque** typiques afin de mieux protéger ses propres systèmes (laboratoire, projets personnels, etc.).
+
+## Installation
+
+```bash
+git clone https://github.com/alexmarceauprevost812-source/ti-attack-texte-.git
+cd ti-attack-texte-
+pip install -r requirements.txt
